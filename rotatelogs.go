@@ -5,6 +5,7 @@
 package rotatelogs
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"os"
@@ -112,7 +113,10 @@ func (rl *RotateLogs) Write(p []byte) (n int, err error) {
 		return 0, errors.Wrap(err, `failed to acquite target io.Writer`)
 	}
 
-	return out.Write(p)
+	bufWriter := bufio.NewWriter(out)
+	return bufWriter.Write(p)
+
+	//return out.Write(p)
 }
 
 // must be locked during this operation
